@@ -24,7 +24,7 @@ n - m
 
 # Use the `seq()` function to produce a range of numbers from -5 to 10 in `0.1`
 # increments. Store it in a variable `x_range`
-x_range <- seq(-5, 10)
+x_range <- seq(-5, 10, by = 0.1)
 
 # Create a vector `sin_wave` by calling the `sin()` function on each element 
 # in `x_range`.
