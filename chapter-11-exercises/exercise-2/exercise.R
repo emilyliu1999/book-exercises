@@ -51,10 +51,10 @@ select(
 # and returns the vehicle model that gets the most hwy miles/gallon of vehicles 
 # of that make in that year.
 # You'll need to filter more (and do some selecting)!
-
-function(year_choice, make_choice)
-  filter(vehicle)
-  select(model)
+mileage_year <- function(year_choice, make_choice)
+  filtered <- filter(vehicles, make == make_choice, year == year_choice)
+  filtered <- filter(filtered, hwy == max(hwy))
+  select(filtered, model)
 
 # What was the most efficient Honda model of 1995?
-
+mileage_year("Honda", 1995)
