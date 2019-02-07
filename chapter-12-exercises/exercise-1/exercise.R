@@ -16,22 +16,23 @@ avocados <- read.csv("data/avocado.csv", stringsAsFactors = F)
 # Redefine that column as a date using the `as.Date()` function
 # (hint: use the `mutate` function)
 avocados <- avocados %>% 
-  mutate(Date <- as.Date(Date))
+  mutate(Date = as.Date(Date))
 
 # The file had some uninformative column names, so rename these columns:
 # `X4046` to `small_haas`
 # `X4225` to `large_haas`
 # `X4770` to `xlarge_haas`
 avocados <- avocados %>% 
-  rename(small_haas <- X4046, 
-         large_haas <- X4225, 
-         xlarge_haas <- X4770
+  rename(small_haas = X4046, 
+         large_haas = X4225, 
+         xlarge_haas = X4770
          )
 
 # The data only has sales for haas avocados. Create a new column `other_avos`
 # that is the Total.Volume minus all haas avocados (small, large, xlarge)
 avocados <- avocados %>% 
-  mutate(other_avocados <- Total.Volume - small_haas - large_haas - xlarge_haas)
+  mutate(other_avocados = 
+           Total.Volume - small_haas - large_haas - xlarge_haas)
 
 # To perform analysis by avocado size, create a dataframe `by_size` that has
 # only `Date`, `other_avos`, `small_haas`, `large_haas`, `xlarge_haas`
@@ -53,8 +54,8 @@ by_size <- avocados %>%
 # columns: `Date`, `size`, and `volume`.
 size_gathered <- by_size %>% 
   gather(
-    key <- size,
-    value <- volumne,
+    key = size,
+    value = volumne,
     -Date
     )
 
@@ -62,12 +63,15 @@ size_gathered <- by_size %>%
 # (hint, first `group_by` size, then compute using `summarize`)
 avg_sales <- size_gathered %>% 
   group_by(size) %>% 
-  summarize(mean_volume <- mean(volume))
+  summarize(mean_volume = mean(volume))
 
 # This shape also facilitates the visualization of sales over time
 # (how to write this code is covered in Chapter 16)
 ggplot(size_gathered) +
-  geom_smooth(mapping = aes(x = Date, y = volume, col = size), se = F) 
+  geom_smooth(mapping = aes(x = Date, 
+                            y = volume, 
+                            col = size), 
+              se = F) 
 
 
 # We can also investigate sales by avocado type (conventional, organic).
@@ -77,7 +81,7 @@ ggplot(size_gathered) +
 by_type <- avocados %>% 
   group_by(Date, type) %>% 
   summarize(
-    volume <- sum(Total.Volume)
+    volume = sum(Total.Volume)
     )
 
 # To make a (visual) comparison of conventional versus organic sales, you 
@@ -86,11 +90,13 @@ by_type <- avocados %>%
 # the `spread()` function!
 by_type_wide <- by_type %>% 
   spread(
-    key <- type,
-    value <- volume
+    key = type,
+    value = volume
   )
 
 # Now you can create a scatterplot comparing conventional to organic sales!
 # (how to write this code is covered in Chapter 16)
-ggplot(by_type_wide) +
-  geom_point(mapping = aes(x = conventional, y = organic, color = Date)) 
+ggplot(by_type_wide) + geom_point(mapping = 
+                                    aes(x = conventional, 
+                                        y = organic, 
+                                        color = Date)) 
