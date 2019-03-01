@@ -5,12 +5,23 @@ library("shiny")
 #   You will use `shinyUI()` to render this variable (bottom of the script)
 # Give the layout a title of "Income Inequality".
 # The layout should include the following elements:
-
+ui <- navbarPage(
+  "Income Inequality"
+)
 
   # A `tabPanel()` with a title "Introduction" to represent the first tab.
   # This layout will contain the following elements:
 
-
+first_page <- tabPanel(
+  "Introduction",
+  titlePanel("Income Inequality"),
+  p("The below diagram was created
+    by the New York Times to illustrate the increasing level of inequality in
+    the US."),
+  img(inequality.png),
+  a(https:/www.nytimes.com/interactive/2017/08/07/opinion/leonhardt-income-inequality.html),
+  p("strong(Data), em(Relevant)")
+)
     # A `titlePanel()` with the text "Income Inequality"
 
 
@@ -34,7 +45,19 @@ library("shiny")
 
   # The navbarPage layout should have a second `tabPanel()` titled "Growth Chart"
   # This layout should contain the following elements:
-
+second_page <- tabPanel(
+  "Growth Chart",
+  titlePanel("Income growth 1980-2014"),
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput(inputID = "percentile", label = "Income Percentile"),
+      mainPanel(
+        plotOutput(),
+        p("This is a paragraph about the data, a(http://gabriel-zucman.eu/usdina/)")
+      )
+    )
+  )
+)
 
     # A `titlePanel()` with the text "Income growth 1980-2014"
 
